@@ -2,9 +2,9 @@
   "name": "score-card",
   "version": "1.0.0",
   "description": "",
-  "main": "webpack.config.js",
+  "main": "server/index.js",
   "scripts": {
-    "start": "nodemon --watch server -e js,html,jsx server/index.js",
+    "start": "webpack -w & nodemon server/index.js",
     "build": "webpack -w"
   },
   "dependencies": {
@@ -14,7 +14,9 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
+    "body-parser": "^1.16.1",
     "express": "^4.12.3",
+    "morgan": "^1.8.1",
     "node-status": "^0.1.7",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -25,10 +27,14 @@
     "sequelize": "^3.24.1",
     "webpack": "^1.13.2"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyanDriscoll/scoreCard.git"
+  },
   "author": "Ryan Driscoll",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/TheHerm/BallBuster/issues"
+    "url": "https://github.com/RyanDriscoll/scoreCard/issues"
   },
-  "homepage": "https://github.com/TheHerm/BallBuster#readme"
+  "homepage": "https://github.com/RyanDriscoll/scoreCard#readme"
 }
