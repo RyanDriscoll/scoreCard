@@ -35,6 +35,7 @@ class Frame extends React.Component{
           zIndex: '9999',
           height: '90vh',
           width: 'calc(90vh * 0.75)',
+          maxWidth: 'calc(90vh * 0.75)',
           top: '5vh',
           left: '5vw'
         },

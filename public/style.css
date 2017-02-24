@@ -5,6 +5,7 @@
   background: white;
   width: calc(100vw / 9 - 10px);
   position: absolute;
+  max-width: 100px;
 }
 
 .inning {
