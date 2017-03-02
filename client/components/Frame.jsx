@@ -1,12 +1,15 @@
 import React from 'react';
+import { TweenLite, TimelineMax, CSSPlugin, TweenMax } from 'gsap';
 
 class Frame extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       style: {
-        width: 'calc(100vw / 9 - 10px)',
-        top: `${this.props.index * 140}px`
+        top: `${(this.props.row * (400 / 3 + 5) - (400 / 3))}px`,
+        left: `${(this.props.col * 105 - 100)}px`,
+        zIndex: '0',
+        position: 'absolute'
       },
       selected: false
     };
@@ -28,45 +31,42 @@ class Frame extends React.Component{
 
   handleClick(e) {
     e.preventDefault();
-    console.log('clicked')
+    console.log('clicked');
     if (!this.state.selected) {
-      this.setState({
-        style: {
-          zIndex: '9999',
-          height: '90vh',
-          width: 'calc(90vh * 0.75)',
-          maxWidth: 'calc(90vh * 0.75)',
-          top: '5vh',
-          left: '5vw'
+      this.zoom = new TimelineMax()
+      .set(this.canvas, {zIndex: 1})
+      .to(this.canvas, 0.2, {
+        scale: 5,
+        ease: Power2.easeOut
+      }, '+=0.1')
+      .to(this.canvas, 0.2, {
+        css: {
+          top: 280,
+          left: 220,
         },
-        selected: true
-      });
+      }, 0)
+      .to(this.canvas, 0.2, {
+        css: {
+          position: 'fixed'
+        },
+      }, '+=0.1')
+      this.setState({selected: true});
     } else {
-      this.setState({
-        style: {
-          zIndex: '0',
-          width: 'calc(100vw / 9 - 10px)',
-          top: `${this.props.index * 140}px`
-        },
-        selected: false
-      });
+      this.zoom.reverse();
+      this.setState({selected: false});
     }
   }
 
   render(){
     return (
-      <div
-        className="col-1-9"
+      <canvas
         onClick={this.handleClick}
-      >
-        <canvas
-          style={this.state.style}
-          className="frame shadow"
-          width="300px"
-          height="400px"
-          ref={el => {this.canvas = el;}}
-        />
-      </div>
+        style={this.state.style}
+        className="frame shadow"
+        width="300px"
+        height="400px"
+        ref={el => {this.canvas = el;}}
+      />
     )
   }
 }
