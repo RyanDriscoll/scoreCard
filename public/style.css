@@ -7,19 +7,11 @@ html, body {
 
 
 .frame {
-  height: calc(400px / 3);
-  width: 100px;
+  height: calc(100% / 9);
+  width: calc(100% / 9);
   opacity: 0;
   background: white;
-}
-
-td {
-  height: calc(400px / 3);
-  width: 100px;
-}
-
-.inning {
-  width: calc(100vw / 9);
+  position: relative;
 }
 
 .shadow {
@@ -33,15 +25,4 @@ td {
 
 body {
   background: #e2e1e0;
-}
-
-.col-1-9 {
-  width: calc(100%/9);
-}
-
-.grid {
-  display: flex;
-  width: 100vw;
-  height: auto;
-  overflow: scroll;
 }
