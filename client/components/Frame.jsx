@@ -49,6 +49,15 @@ class Frame extends React.Component{
     this.ctx.strokeRect(0, 0, 130, 130);
     this.ctx.restore();
 
+    this.ctx.lineWidth = 3;
+    this.ctx.strokeStyle = '#e5e5e5';
+    this.ctx.moveTo(5, 5);
+    this.ctx.lineTo(15, 15);
+    this.ctx.stroke();
+    this.ctx.moveTo(15, 5);
+    this.ctx.lineTo(5, 15);
+    this.ctx.stroke();
+
     for (let col = 0; col < 3; col++) {
       for (let row = 0; row < 2; row++) {
         let y = row % 2 === 0 ? 345 : 295;
@@ -104,15 +113,21 @@ class Frame extends React.Component{
     e.preventDefault();
     if (!this.state.selected) {
       this.zoom.play(0);
+
+
+
+      this.setState({selected: !this.state.selected});
     } else {
-      this.zoom.reverse();
+      console.log(this.currentMousePosition.x, this.currentMousePosition.y)
+      if (this.currentMousePosition.x < 20 && this.currentMousePosition.y < 20) {
+        this.zoom.reverse();
+        this.setState({selected: !this.state.selected});
+      }
     }
-    this.setState({selected: !this.state.selected});
   }
 
   render(){
     return (
-      <div className="frame-wrapper">
       <canvas
         onClick={this.handleClick}
         onMouseDown={this.handleMouseDown}
@@ -123,7 +138,6 @@ class Frame extends React.Component{
         height="400px"
         ref={el => {this.canvas = el;}}
       />
-      </div>
     )
   }
 }
