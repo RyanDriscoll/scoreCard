@@ -3,22 +3,22 @@ import Frame from './Frame.jsx';
 import { TweenLite, TimelineLite, CSSPlugin } from 'gsap';
 
 
-class Table extends React.Component {
+class FrameContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.frames = document.getElementsByClassName('frame');
   }
 
   componentDidMount() {
+    this.frames = document.getElementsByClassName('frame');
     const tl = new TimelineLite();
     tl.staggerFromTo(this.frames, 0.2, {x: 100, autoAlpha: 0}, {x: 0, autoAlpha: 1, ease: Power1.easeOut}, 0.01)
   }
 
   render() {
-    const newTable = [];
+    const frameArray = [];
     for (let row = 1; row <= 9; row++) {
       for (let col = 1; col <= 9; col++) {
-        newTable.push(
+        frameArray.push(
           <Frame
             key={[col, row]}
             col={col}
@@ -30,11 +30,11 @@ class Table extends React.Component {
     return (
       <div>
         {
-        newTable
+        frameArray
         }
       </div>
     );
   }
 }
 
-export default Table;
+export default FrameContainer;
