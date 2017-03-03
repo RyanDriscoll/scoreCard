@@ -7,10 +7,6 @@ class Frame extends React.Component{
     this.state = {
       selected: false,
       drawing: false,
-      style: {
-        height: 'calc(100% / 9)',
-        width: 'calc(100% / 9)',
-      }
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -18,6 +14,8 @@ class Frame extends React.Component{
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.drawFrame = this.drawFrame.bind(this);
     this.draw = this.draw.bind(this);
+
+    this.scale = 5;
 
     this.currentMousePosition = {
         x: 0,
@@ -36,7 +34,7 @@ class Frame extends React.Component{
     this.zoom = new TimelineLite({paused: true})
       .set(this.canvas, {zIndex: 1})
       .to(this.canvas, 0.1, {
-        // scale: 5,
+        scale: this.scale,
         ease: Power2.easeOut
       }, '+=0.1');
   }
@@ -69,11 +67,10 @@ class Frame extends React.Component{
   }
 
   draw(start, end, color = 'black') {
-    // console.log('drawing', start, end)
-    // this.ctx.scale(5, 5);
-    // this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.beginPath();
-    this.ctx.lineWidth = 5;
+    this.ctx.lineJoin = 'round';
+    this.ctx.lineCap = 'round';
+    this.ctx.lineWidth = 8;
     this.ctx.strokeStyle = color;
     this.ctx.moveTo(start.x, start.y);
     this.ctx.lineTo(end.x, end.y);
@@ -83,8 +80,8 @@ class Frame extends React.Component{
 
   handleMouseDown(e) {
     this.setState({drawing: true})
-    this.currentMousePosition.x = ((e.pageX - this.canvas.offsetLeft) * (this.canvas.width / this.canvas.clientWidth));
-    this.currentMousePosition.y = ((e.pageY - this.canvas.offsetTop) * (this.canvas.height / this.canvas.clientHeight));
+    this.currentMousePosition.x = ((e.pageX - (this.canvas.offsetLeft - (this.canvas.clientWidth * ((this.scale - 1) / 2)))) * (this.canvas.width / this.canvas.clientWidth)) / this.scale;
+    this.currentMousePosition.y = ((e.pageY - (this.canvas.offsetTop - (this.canvas.clientHeight * ((this.scale - 1) / 2)))) * (this.canvas.height / this.canvas.clientHeight)) / this.scale;
   }
 
   handleMouseUp(e) {
@@ -97,10 +94,9 @@ class Frame extends React.Component{
     this.lastMousePosition.x = this.currentMousePosition.x;
     this.lastMousePosition.y = this.currentMousePosition.y;
 
-    this.currentMousePosition.x = ((e.pageX - this.canvas.offsetLeft) * (this.canvas.width / this.canvas.clientWidth));
-    this.currentMousePosition.y = ((e.pageY - this.canvas.offsetTop) * (this.canvas.height / this.canvas.clientHeight));
+    this.currentMousePosition.x = ((e.pageX - (this.canvas.offsetLeft - (this.canvas.clientWidth * ((this.scale - 1) / 2)))) * (this.canvas.width / this.canvas.clientWidth)) / this.scale;
+    this.currentMousePosition.y = ((e.pageY - (this.canvas.offsetTop - (this.canvas.clientHeight * ((this.scale - 1) / 2)))) * (this.canvas.height / this.canvas.clientHeight)) / this.scale;
 
-    console.log('pageX', e.pageX - this.canvas.offsetLeft, this.canvas.width / this.canvas.clientWidth, 'currentMousePosition', this.currentMousePosition.x)
     this.draw(this.lastMousePosition, this.currentMousePosition);
   }
 
@@ -116,17 +112,18 @@ class Frame extends React.Component{
 
   render(){
     return (
+      <div className="frame-wrapper">
       <canvas
         onClick={this.handleClick}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
         onMouseMove={this.handleMouseMove}
-        style={this.state.style}
         className="frame shadow"
         width="300px"
         height="400px"
         ref={el => {this.canvas = el;}}
       />
+      </div>
     )
   }
 }
